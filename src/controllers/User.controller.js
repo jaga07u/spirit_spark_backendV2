@@ -16,7 +16,9 @@ const generateAccessAndRefresToken=async(userId)=>{
             {
                _id:user?._id,
                username:user?.username,
-               email:user?.email
+               email:user?.email,
+               avatarImg:user?.avatar,
+               fullname:user?.fullname
             },process.env.TOKEN_SECRET,
             { expiresIn: process.env.TOKEN_SECRET_EXPIRY }
          )
