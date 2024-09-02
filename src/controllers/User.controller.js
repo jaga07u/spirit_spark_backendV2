@@ -116,7 +116,7 @@ const generateAccessAndRefresToken=async(userId)=>{
  }
 
  const LoginUserQuote=async(req,res)=>{
-   const UserId=new mongoose.Types.ObjectId(req.user._id);
+   const UserId=req.user._id;
 
 
     try {
