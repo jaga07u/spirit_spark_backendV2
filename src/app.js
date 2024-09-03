@@ -15,7 +15,7 @@ const app=express();
 // });
 const corsOptions = {
     origin: "https://spirit-spark.vercel.app", // Replace with your client's origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 };
