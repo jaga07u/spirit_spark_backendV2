@@ -34,4 +34,7 @@ router.route("/signout").delete(verifyJWT,LogoutUser);
 router.route("/forgotpassword").patch(ForgotPassword);
 router.route("/profile").get(verifyJWT,LoginUserQuote);
 router.route("/search/:username").get(verifyJWT,searchUser);
+router.route("/call").get(async(req,res)=>{
+    res.json({message:"Hello"});
+})
 export default router;
