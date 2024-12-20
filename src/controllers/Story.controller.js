@@ -18,7 +18,7 @@ const postStory=async(req,res)=>{
      const IsContentSafe=await Text_detection(story);
      console.log(IsImageSafe);
      console.log(IsContentSafe);
-     if(IsImageSafe == "no" || IsContentSafe == "yes"){
+     if(IsImageSafe == "yes" || IsContentSafe == "yes"){
          res.status(200)
          .json({
            success:false

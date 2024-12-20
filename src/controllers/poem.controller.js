@@ -20,7 +20,7 @@ const postPoem=async(req,res)=>{
     const IsContentSafe=await Text_detection(poem);
     console.log(IsImageSafe);
     console.log(IsContentSafe);
-    if(IsImageSafe == "no" || IsContentSafe == "yes"){
+    if(IsImageSafe == "yes" || IsContentSafe == "yes"){
         res.status(200)
         .json({
           success:false
