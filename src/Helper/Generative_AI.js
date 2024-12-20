@@ -31,7 +31,6 @@ const Text_detection = async (text) => {
     return responseText;
   } catch (error) {
     console.log('jkfk3354sssssssssssssssss');
-    toast.error("Sorry you can't upload this type of content")
     return "yes";
     // console.error("Error generating content:", error);
     // throw error; // Propagate the error

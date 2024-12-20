@@ -16,49 +16,51 @@ const postCouplet=async(req,res)=>{
      const {couplet,TextColor,image}=req.body;
      console.log(req.body);
      let CoupletImagePath=null;
-     const IsImageSafe=await img_detect(image);
-     const IsContentSafe=await Text_detection(couplet);
-     console.log(IsImageSafe);
-     console.log(IsContentSafe);
-     if(IsImageSafe == "no" || IsContentSafe == "yes"){
-         res.status(200)
-         .json({
-           success:false
-         })
+    //  const IsImageSafe=await img_detect(image);
+    //  const IsContentSafe=await Text_detection(couplet);
+    //  console.log(IsImageSafe);
+    //  console.log(IsContentSafe);
+    //  if(IsImageSafe == "no" || IsContentSafe == "yes"){
+    //      res.status(200)
+    //      .json({
+    //        success:false
+    //      })
+    //  }
+     if(req.files?.bgImg){
+        CoupletImagePath=req.files?.bgImg[0]?.path;
      }
-    //  if(req.files?.bgImg){
-    //     CoupletImagePath=req.files?.bgImg[0]?.path;
-    //  }
-    //  let CoupletImage=null;
-    //  if(CoupletImagePath){
-    //      CoupletImage=await UploadOnCloudnary(CoupletImagePath);
-    //  }
+     let CoupletImage=null;
+     if(CoupletImagePath){
+         CoupletImage=await UploadOnCloudnary(CoupletImagePath);
+     }
      
-    //  try{
-    //    const CoupletCreate= await Couplet.create({
-    //         couplet,
-    //         language:"hindi",
-    //         TextColor,
-    //         BgImageUrl:CoupletImage?.url || "",
-    //         Owner:req.user._id
-    //       })
-    //       console.log(couplet);
-    //       if(!CoupletCreate){
-    //         throw new ApiError(401,"Sorry Something went wrong");
-    //       }
-    //     return res.status(201)
-    //     .json(new ApiResponse(200,"couplet created Successfully"));
-    // }
-    //  catch(e){
-    //     console.log("Error happend in posing couplet",e);
+     try{
+       const CoupletCreate= await Couplet.create({
+            couplet,
+            language:"hindi",
+            TextColor,
+            BgImageUrl:CoupletImage?.url || "",
+            Owner:req.user._id
+          })
+          console.log(couplet);
+          if(!CoupletCreate){
+            throw new ApiError(401,"Sorry Something went wrong");
+          }
+        return res.status(201)
+        .json(new ApiResponse(200,"couplet created Successfully"));
+    }
+     catch(e){
+        console.log("Error happend in posing couplet",e);
 
-    //  }
+     }
 }
 const getCouplets=async(req,res)=>{
     const {limit,pages}=req.params;
      console.log(Number(limit))
     // console.log(pages);
     const userId = new mongoose.Types.ObjectId(req.user._id);
+    console.log(userId);
+    
     const skip = (pages - 1) * limit;
     console.log(skip);
     try{
@@ -173,6 +175,8 @@ const getCouplets=async(req,res)=>{
                 $limit: Number(limit)
             }
         ]);
+        console.log(couplets);
+        
         if(!couplets){
             throw new ApiError(401,"Sorry Couplet is not get")
         }
