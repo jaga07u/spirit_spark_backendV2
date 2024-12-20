@@ -16,16 +16,16 @@ const postCouplet=async(req,res)=>{
      const {couplet,TextColor,image}=req.body;
      console.log(req.body);
      let CoupletImagePath=null;
-    //  const IsImageSafe=await img_detect(image);
-    //  const IsContentSafe=await Text_detection(couplet);
-    //  console.log(IsImageSafe);
-    //  console.log(IsContentSafe);
-    //  if(IsImageSafe == "no" || IsContentSafe == "yes"){
-    //      res.status(200)
-    //      .json({
-    //        success:false
-    //      })
-    //  }
+     const IsImageSafe=await img_detect(image);
+     const IsContentSafe=await Text_detection(couplet);
+     console.log(IsImageSafe);
+     console.log(IsContentSafe);
+     if(IsImageSafe == "no" || IsContentSafe == "yes"){
+         res.status(200)
+         .json({
+           success:false
+         })
+     }
      if(req.files?.bgImg){
         CoupletImagePath=req.files?.bgImg[0]?.path;
      }
