@@ -44,27 +44,27 @@ const postQuote=async(req,res)=>{
         })
     }
     
-    //  if(!QuoteImagePath){
-    //     throw new ApiError(400,"Avatar file is required")
-    //  }
-    //  const QuoteImage=await UploadOnCloudnary(QuoteImagePath);
-    //  try{
-    //    const QuoteCreate= await Quote.create({
-    //         quote,
-    //         language:"hindi",
-    //         TextColor,
-    //         BgImageUrl:QuoteImage.url || "",
-    //         Owner:req.user._id
-    //       })
-    //       if(!QuoteCreate){
-    //         throw new ApiError(401,"Sorry Something went wrong");
-    //       }
-    //     return res.status(201).json(new ApiResponse(200,"Post created Successfully"));
-    //  }
-    //  catch(e){
-    //     console.log("Error happend in posing Quote",e);
+     if(!QuoteImagePath){
+        throw new ApiError(400,"Avatar file is required")
+     }
+     const QuoteImage=await UploadOnCloudnary(QuoteImagePath);
+     try{
+       const QuoteCreate= await Quote.create({
+            quote,
+            language:"hindi",
+            TextColor,
+            BgImageUrl:QuoteImage.url || "",
+            Owner:req.user._id
+          })
+          if(!QuoteCreate){
+            throw new ApiError(401,"Sorry Something went wrong");
+          }
+        return res.status(201).json(new ApiResponse(200,"Post created Successfully"));
+     }
+     catch(e){
+        console.log("Error happend in posing Quote",e);
 
-    //  }
+     }
 }
 const getQuotes=async(req,res)=>{
     const {limit,pages}=req.params;

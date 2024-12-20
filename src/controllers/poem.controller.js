@@ -26,32 +26,32 @@ const postPoem=async(req,res)=>{
           success:false
         })
     }
-    //  if(req.files.bgImg){
-    //     PoemImagePath=req.files?.bgImg[0]?.path;
-    //  }
-    //  let PoemImage=null;
-    //  if(PoemImagePath){
-    //     PoemImage=await UploadOnCloudnary(PoemImagePath);
-    //  }
+     if(req.files.bgImg){
+        PoemImagePath=req.files?.bgImg[0]?.path;
+     }
+     let PoemImage=null;
+     if(PoemImagePath){
+        PoemImage=await UploadOnCloudnary(PoemImagePath);
+     }
     
      
-    //  try{
-    //    const PoemCreate= await Poem.create({
-    //          poem,
-    //         language:"hindi",
-    //         TextColor,
-    //         BgImageUrl:PoemImage?.url || "",
-    //         Owner:req.user._id
-    //       })
-    //       if(!PoemCreate){
-    //         throw new ApiError(401,"Sorry Something went wrong");
-    //       }
-    //     return res.status(201).json(new ApiResponse(200,"poem created Successfully"));
-    //  }
-    //  catch(e){
-    //     console.log("Error happend in posing poem",e);
+     try{
+       const PoemCreate= await Poem.create({
+             poem,
+            language:"hindi",
+            TextColor,
+            BgImageUrl:PoemImage?.url || "",
+            Owner:req.user._id
+          })
+          if(!PoemCreate){
+            throw new ApiError(401,"Sorry Something went wrong");
+          }
+        return res.status(201).json(new ApiResponse(200,"poem created Successfully"));
+     }
+     catch(e){
+        console.log("Error happend in posing poem",e);
 
-    //  }
+     }
 }
 const getPoem=async(req,res)=>{
     const {limit,pages}=req.params;

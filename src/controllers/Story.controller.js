@@ -24,31 +24,31 @@ const postStory=async(req,res)=>{
            success:false
          })
      }
-    //  if(req.files.bgImg){
-    //     StoryImagePath=req.files?.bgImg[0]?.path;
-    //  }
-    //  let StoryImage=null;
-    //  if(StoryImagePath){
-    //     StoryImage=await UploadOnCloudnary(StoryImagePath);
-    //  }
+     if(req.files.bgImg){
+        StoryImagePath=req.files?.bgImg[0]?.path;
+     }
+     let StoryImage=null;
+     if(StoryImagePath){
+        StoryImage=await UploadOnCloudnary(StoryImagePath);
+     }
      
-    //  try{
-    //    const StoryCreate= await Story.create({
-    //         story,
-    //         language:"hindi",
-    //         TextColor,
-    //         BgImageUrl:StoryImage?.url || "",
-    //         Owner:req.user._id
-    //       })
-    //       if(!StoryCreate){
-    //         throw new ApiError(401,"Sorry Something went wrong");
-    //       }
-    //     return res.status(201).json(new ApiResponse(200,"story created Successfully"));
-    //  }
-    //  catch(e){
-    //     console.log("Error happend in posing couplet",e);
+     try{
+       const StoryCreate= await Story.create({
+            story,
+            language:"hindi",
+            TextColor,
+            BgImageUrl:StoryImage?.url || "",
+            Owner:req.user._id
+          })
+          if(!StoryCreate){
+            throw new ApiError(401,"Sorry Something went wrong");
+          }
+        return res.status(201).json(new ApiResponse(200,"story created Successfully"));
+     }
+     catch(e){
+        console.log("Error happend in posing couplet",e);
 
-    //  }
+     }
 }
 const getStories=async(req,res)=>{
     const {limit,pages}=req.params;
