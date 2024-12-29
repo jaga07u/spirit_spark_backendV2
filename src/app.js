@@ -6,8 +6,6 @@ import  cookieParser from 'cookie-parser'
 import UserQuoteRoute from "./routes/UserQuote.route.js"
 import FollowerRoute from "./routes/Follwer.route.js"
 import cors from 'cors'
-
-
 const app=express();
 // app.get("/",(req,res)=>{
 //    // console.log("Hello World!");

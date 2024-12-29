@@ -4,11 +4,13 @@ import {UserCouplets} from '../controllers/Couplet.controller.js'
 import {UserPoems} from "../controllers/poem.controller.js"
 import {UserStories} from '../controllers/Story.controller.js'
 import { verifyJWT } from "../middleware/auth.midlleware.js";
+import { getShareData } from "../controllers/share.controller.js"
 
 const router=Router();
 
 
 router.route("/post/:userId").get(verifyJWT,UserPosts);
+router.route("/share/:id").get(verifyJWT,getShareData);
 // router.route("/couplet/:userId").get(verifyJWT,UserCouplets);
 // router.route("/story/:userId").get(verifyJWT,UserStories);
 // router.route("/poem/:userId").get(verifyJWT,UserPoems);
