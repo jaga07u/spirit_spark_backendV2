@@ -23,6 +23,8 @@ const getShareData = async (req, res) => {
                 data,
                 Owner: {
                     id: user._id,
+                    username:user.username,
+                    avatar:user?.avatarImg,
                     name: user.name,
                     email: user.email, // Include only necessary fields
                 },
