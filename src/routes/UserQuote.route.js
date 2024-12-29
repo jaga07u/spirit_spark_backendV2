@@ -10,7 +10,7 @@ const router=Router();
 
 
 router.route("/post/:userId").get(verifyJWT,UserPosts);
-router.route("/share/:id").get(verifyJWT,getShareData);
+router.route("/share/:id").get(getShareData);
 // router.route("/couplet/:userId").get(verifyJWT,UserCouplets);
 // router.route("/story/:userId").get(verifyJWT,UserStories);
 // router.route("/poem/:userId").get(verifyJWT,UserPoems);

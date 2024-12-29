@@ -3,46 +3,36 @@ import { Poem } from "../models/poem.model.js";
 import { Couplet } from "../models/Couplet.model.js";
 import { Story } from "../models/Story.model.js";
 import { User } from "../models/User.model.js";
-// const quoteData=Quote.findOne({_id:id});
-// const poemData=Quote.findOne({_id:id});
-// const storyData=Quote.findOne({_id:id});
-// const coupletData=Quote.findOne({_id:id});
+
 const getShareData = async (req, res) => {
     try {
-        const { id } = req.params; // Extract id from params
-        // Find the data in the Quote collection
-const quoteData=Quote.findOne({_id:id});
-const poemData=Quote.findOne({_id:id});
-const storyData=Quote.findOne({_id:id});
-const coupletData=Quote.findOne({_id:id});
-const user = await User.findOne({ _id: quoteData.Owner});
-        if (quoteData) {
+        const { id } = req.params; // Extract id from request parameters
+
+        // Use `await` to properly handle asynchronous calls
+        const quoteData = await Quote.findOne({ _id: id });
+        const poemData = await Poem.findOne({ _id: id });
+        const storyData = await Story.findOne({ _id: id });
+        const coupletData = await Couplet.findOne({ _id: id });
+
+        // If any of the data is found, fetch the user associated with it
+        let data = quoteData || poemData || storyData || coupletData;
+
+        if (data) {
+            const user = await User.findOne({ _id: data.Owner }); // Assuming `Owner` is the field in your models
             return res.json({
-                "data":quoteData,
-                user,
+                data,
+                Owner: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email, // Include only necessary fields
+                },
             });
         }
-        if (poemData) {
-            return res.json({
-                "data":poemData,
-                user,
-            });
-        }
-        if (storyData) {
-            return res.json({
-               "data": storyData,
-                user,
-            });
-         
-        }
-        if (coupletData) {
-            return res.json({
-                "data":coupletData,
-                user,
-            });
-        }
-        // Fetch user data if necessary
-       // Replace with actual user field logic if needed
+
+        // If no data is found
+        return res.status(404).json({
+            message: "Data not found",
+        });
     } catch (error) {
         console.error("Error fetching share data:", error);
         return res.status(500).json({
@@ -50,4 +40,5 @@ const user = await User.findOne({ _id: quoteData.Owner});
         });
     }
 };
-export {getShareData}
+
+export { getShareData };
