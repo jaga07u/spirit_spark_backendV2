@@ -1,8 +1,8 @@
-import { Quote } from "../models/Quote.model";
-import { Poem } from "../models/poem.model";
-import { Couplet } from "../models/Couplet.model";
-import { Story } from "../models/Story.model";
-import { User } from "../models/User.model";
+import { Quote } from "../models/Quote.model.js";
+import { Poem } from "../models/poem.model.js";
+import { Couplet } from "../models/Couplet.model.js";
+import { Story } from "../models/Story.model.js";
+import { User } from "../models/User.model.js";
 // const quoteData=Quote.findOne({_id:id});
 // const poemData=Quote.findOne({_id:id});
 // const storyData=Quote.findOne({_id:id});
