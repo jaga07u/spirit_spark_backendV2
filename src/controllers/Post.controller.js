@@ -16,9 +16,10 @@ import { img_detect, Text_detection } from '../Helper/Generative_AI.js'
 import fs from "fs/promises"
 
 const postQuote=async(req,res)=>{
-     const {quote,TextColor,image}=req.body;
+     const {quote,TextColor,image,url}=req.body;
    //  console.log(req.body);
-     
+   const QuoteImage="";
+    if(req.files?.bgImg.length()>0){
      const QuoteImg=req.files?.bgImg[0];
      const QuoteImagePath= req.files?.bgImg[0]?.path;
     //  const imageBuffer = await fs.readFile(QuoteImagePath);
@@ -47,13 +48,14 @@ const postQuote=async(req,res)=>{
      if(!QuoteImagePath){
         throw new ApiError(400,"Avatar file is required")
      }
-     const QuoteImage=await UploadOnCloudnary(QuoteImagePath);
+      QuoteImage=await UploadOnCloudnary(QuoteImagePath);
+    }
      try{
        const QuoteCreate= await Quote.create({
             quote,
             language:"hindi",
             TextColor,
-            BgImageUrl:QuoteImage.url || "",
+            BgImageUrl:QuoteImage.url ||url,
             Owner:req.user._id
           })
           if(!QuoteCreate){

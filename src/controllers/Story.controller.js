@@ -12,8 +12,10 @@ import "dotenv/config"
 
 
 const postStory=async(req,res)=>{
-     const {story,TextColor,image}=req.body;
+     const {story,TextColor,image,url}=req.body;
      let StoryImagePath=null;
+     let StoryImage=null;
+     if(req.files?.bgImg.length()>0){
      const IsImageSafe=await img_detect(image);
      const IsContentSafe=await Text_detection(story);
      console.log(IsImageSafe);
@@ -27,17 +29,16 @@ const postStory=async(req,res)=>{
      if(req.files.bgImg){
         StoryImagePath=req.files?.bgImg[0]?.path;
      }
-     let StoryImage=null;
      if(StoryImagePath){
         StoryImage=await UploadOnCloudnary(StoryImagePath);
      }
-     
+    }
      try{
        const StoryCreate= await Story.create({
             story,
             language:"hindi",
             TextColor,
-            BgImageUrl:StoryImage?.url || "",
+            BgImageUrl:StoryImage?.url || url,
             Owner:req.user._id
           })
           if(!StoryCreate){

@@ -12,10 +12,12 @@ import "dotenv/config"
 
 
 const postPoem=async(req,res)=>{
-     const {poem,TextColor,image}=req.body;
+     const {poem,TextColor,image,url}=req.body;
      let PoemImagePath=null;
     //  console.log(req.body);
     //  console.log(req.files);
+    let PoemImage=null;
+    if(req.files?.bgImg.length()>0){
     const IsImageSafe=await img_detect(image);
     const IsContentSafe=await Text_detection(poem);
     console.log(IsImageSafe);
@@ -29,18 +31,17 @@ const postPoem=async(req,res)=>{
      if(req.files.bgImg){
         PoemImagePath=req.files?.bgImg[0]?.path;
      }
-     let PoemImage=null;
      if(PoemImagePath){
         PoemImage=await UploadOnCloudnary(PoemImagePath);
      }
-    
+    }
      
      try{
        const PoemCreate= await Poem.create({
              poem,
             language:"hindi",
             TextColor,
-            BgImageUrl:PoemImage?.url || "",
+            BgImageUrl:PoemImage?.url ||url,
             Owner:req.user._id
           })
           if(!PoemCreate){

@@ -13,9 +13,11 @@ import "dotenv/config"
 
 
 const postCouplet=async(req,res)=>{
-     const {couplet,TextColor,image}=req.body;
+     const {couplet,TextColor,image,url}=req.body;
      console.log(req.body);
+     let CoupletImage=null;
      let CoupletImagePath=null;
+     if(req.fiels.length()>0){
      const IsImageSafe=await img_detect(image);
      const IsContentSafe=await Text_detection(couplet);
      console.log(IsImageSafe);
@@ -29,17 +31,16 @@ const postCouplet=async(req,res)=>{
      if(req.files?.bgImg){
         CoupletImagePath=req.files?.bgImg[0]?.path;
      }
-     let CoupletImage=null;
      if(CoupletImagePath){
          CoupletImage=await UploadOnCloudnary(CoupletImagePath);
      }
-     
+    }
      try{
        const CoupletCreate= await Couplet.create({
             couplet,
             language:"hindi",
             TextColor,
-            BgImageUrl:CoupletImage?.url || "",
+            BgImageUrl:CoupletImage?.url || url,
             Owner:req.user._id
           })
           console.log(couplet);

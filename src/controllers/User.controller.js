@@ -117,8 +117,6 @@ const generateAccessAndRefresToken=async(userId)=>{
 
  const LoginUserQuote=async(req,res)=>{
    const UserId=req.user._id;
-
-
     try {
          const quotes = await Quote.aggregate([
     // Match stage to filter quotes by owner ID
