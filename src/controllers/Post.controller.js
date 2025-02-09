@@ -19,7 +19,7 @@ const postQuote=async(req,res)=>{
      const {quote,TextColor,image,url}=req.body;
    //  console.log(req.body);
    const QuoteImage="";
-    if(req.files?.bgImg.length()>0){
+    if(req.files?.bgImg?.length()>0){
      const QuoteImg=req.files?.bgImg[0];
      const QuoteImagePath= req.files?.bgImg[0]?.path;
     //  const imageBuffer = await fs.readFile(QuoteImagePath);

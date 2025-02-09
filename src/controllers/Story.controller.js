@@ -15,7 +15,7 @@ const postStory=async(req,res)=>{
      const {story,TextColor,image,url}=req.body;
      let StoryImagePath=null;
      let StoryImage=null;
-     if(req.files?.bgImg.length()>0){
+     if(req.files?.bgImg?.length()>0){
      const IsImageSafe=await img_detect(image);
      const IsContentSafe=await Text_detection(story);
      console.log(IsImageSafe);
@@ -26,7 +26,7 @@ const postStory=async(req,res)=>{
            success:false
          })
      }
-     if(req.files.bgImg){
+     if(req.files?.bgImg){
         StoryImagePath=req.files?.bgImg[0]?.path;
      }
      if(StoryImagePath){

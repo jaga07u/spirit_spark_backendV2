@@ -17,7 +17,7 @@ const postPoem=async(req,res)=>{
     //  console.log(req.body);
     //  console.log(req.files);
     let PoemImage=null;
-    if(req.files?.bgImg.length()>0){
+    if(req.files?.bgImg?.length()>0){
     const IsImageSafe=await img_detect(image);
     const IsContentSafe=await Text_detection(poem);
     console.log(IsImageSafe);
@@ -28,7 +28,7 @@ const postPoem=async(req,res)=>{
           success:false
         })
     }
-     if(req.files.bgImg){
+     if(req.files?.bgImg){
         PoemImagePath=req.files?.bgImg[0]?.path;
      }
      if(PoemImagePath){
