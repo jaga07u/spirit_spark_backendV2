@@ -22,6 +22,11 @@ const postCouplet=async(req,res)=>{
      const IsContentSafe=await Text_detection(couplet);
      console.log(IsImageSafe);
      console.log(IsContentSafe);
+     if(IsImageSafe=="Error" || IsContentSafe=="Error"){
+      return res.status(501).json({
+          Error:"Sorry Server Goes Down"
+      })
+ }
      if(IsImageSafe == "yes" || IsContentSafe == "yes"){
          res.status(200)
          .json({

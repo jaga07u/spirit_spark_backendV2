@@ -22,8 +22,13 @@ const postPoem=async(req,res)=>{
     const IsContentSafe=await Text_detection(poem);
     console.log(IsImageSafe);
     console.log(IsContentSafe);
+      if(IsImageSafe=="Error" || IsContentSafe=="Error"){
+           return res.status(501).json({
+               Error:"Sorry Server Goes Down"
+           })
+      }
     if(IsImageSafe == "yes" || IsContentSafe == "yes"){
-        res.status(200)
+      return  res.status(200)
         .json({
           success:false
         })
@@ -163,7 +168,8 @@ const getPoem=async(req,res)=>{
                     followerCount:1,
                     followingCount:1,
                     isLiked: 1,
-                    isFollowed: 1 // Add the isFollowed field
+                    isFollowed: 1 // Add the isFollowed field,
+                    
                 }
             },
             {
