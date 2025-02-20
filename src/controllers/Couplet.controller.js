@@ -17,7 +17,7 @@ const postCouplet=async(req,res)=>{
      console.log(req.body);
      let CoupletImage=null;
      let CoupletImagePath=null;
-     if(req.fiels.length>0){
+     if(req.fiels?.length>0){
      const IsImageSafe=await img_detect(image);
      const IsContentSafe=await Text_detection(couplet);
      console.log(IsImageSafe);
