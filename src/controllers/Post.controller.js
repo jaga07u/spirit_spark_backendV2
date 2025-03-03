@@ -22,18 +22,6 @@ const postQuote=async(req,res)=>{
     if(req.files?.bgImg?.length>0){
      const QuoteImg=req.files?.bgImg[0];
      const QuoteImagePath= req.files?.bgImg[0]?.path;
-    //  const imageBuffer = await fs.readFile(QuoteImagePath);
-    //  const base64Image = imageBuffer.toString('base64');
-    // console.log(QuoteImg);
-     
-    //  const Image = {
-    //   inlineData: {
-    //     data: image ,
-    //     mimeType: QuoteImg.mimetype
-    //   }
-    // };
-    // console.log(Image);
-    
     const IsImageSafe=await img_detect(image);
     const IsContentSafe=await Text_detection(quote);
     console.log(IsImageSafe);
@@ -469,17 +457,21 @@ const deleteQuotes = async (req, res, next) => {
     }
 
     const quote = await Quote.findById(quoteId);
-
-    if (!quote) {
-      throw new ApiError(404, "Poem not found");
-    }
-
-    const imageUrl = quote.BgImageUrl;
+    const story = await Story.findById(quoteId);
+    const poem = await Poem.findById(quoteId);
+    const couplet = await Couplet.findById(quoteId);
+    const data=quote || story || poem || couplet;
+   if(!data){
+      throw new Error("something went wrong");
+   }
+    const imageUrl = data.BgImageUrl;
     const imageUrlParts = imageUrl ? imageUrl.split('/') : [];
     const imagePublicId = imageUrlParts.length > 0 ? imageUrlParts[imageUrlParts.length - 1].split('.')[0] : null;
     // Delete the poem document
+    await Couplet.findByIdAndDelete(quoteId);
     await Quote.findByIdAndDelete(quoteId);
-
+    await Story.findByIdAndDelete(quoteId);
+    await Poem.findByIdAndDelete(quoteId);
     // Delete the associated image in Cloudinary
     if (imagePublicId) {
       await Cloudnary.api.delete_resources(imagePublicId, { type: 'upload', resource_type: "image" });
