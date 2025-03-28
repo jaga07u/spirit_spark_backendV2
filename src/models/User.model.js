@@ -27,6 +27,7 @@ const UserSchema=new Schema(
         ,
         avatarImg:{
             type:String,
+            default:"https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001877.png"
         },
         coverImg:{
             type:String
