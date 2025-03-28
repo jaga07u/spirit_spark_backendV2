@@ -12,6 +12,7 @@ const app=express();
 //     res.send("Hello World!")
 // });
 const corsOptions = {
+   // origin:"http://localhost:3000",
     origin: "https://spirit-spark-nextjs.vercel.app", // Replace with your client's origin http://localhost:3000  ||https://spirit-spark.vercel.app
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers

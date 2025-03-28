@@ -11,13 +11,16 @@ import {Couplet} from "../models/Couplet.model.js"
 import { img_detect, Text_detection } from '../Helper/Generative_AI.js'
 import "dotenv/config"
 
-
 const postCouplet=async(req,res)=>{
-     const {couplet,TextColor,image,url}=req.body;
+     const {couplet,TextColor,image,url,bgImg}=req.body;
+     console.log(couplet);
+     console.log(bgImg);
      console.log(req.body);
+     console.log(req.files?.bgImg);
+     
      let CoupletImage=null;
      let CoupletImagePath=null;
-     if(req.fiels?.length>0){
+     if(req.files?.bgImg?.length>0){
      const IsImageSafe=await img_detect(image);
      const IsContentSafe=await Text_detection(couplet);
      console.log(IsImageSafe);
@@ -28,14 +31,12 @@ const postCouplet=async(req,res)=>{
       })
  }
      if(IsImageSafe == "yes" || IsContentSafe == "yes"){
-         res.status(200)
+         return res.status(200)
          .json({
            success:false
          })
      }
-     if(req.files?.bgImg){
-        CoupletImagePath=req.files?.bgImg[0]?.path;
-     }
+     CoupletImagePath=req.files.bgImg[0].path;
      if(CoupletImagePath){
          CoupletImage=await UploadOnCloudnary(CoupletImagePath);
      }
@@ -57,8 +58,9 @@ const postCouplet=async(req,res)=>{
     }
      catch(e){
         console.log("Error happend in posing couplet",e);
-
+        throw new ApiError(500, "Error creating couplet", e);
      }
+//return new ApiRespone(200,"Couplet Created Successfully")
 }
 const getCouplets=async(req,res)=>{
     const {limit,pages}=req.params;
