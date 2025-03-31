@@ -12,13 +12,12 @@ const app=express();
 //     res.send("Hello World!")
 // });
 const corsOptions = {
-    //origin:"http://localhost:3000",
+  //  origin:"http://localhost:3000",
     origin: "https://spirit-spark-nextjs.vercel.app", // Replace with your client's origin http://localhost:3000  ||https://spirit-spark.vercel.app
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 };
-
 app.use(cors(corsOptions));
 app.use(express.json({limit:"76kb"}))
 app.use(express.urlencoded({extended:true ,limit:"16kb"}))
