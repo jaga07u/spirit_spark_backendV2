@@ -1,5 +1,5 @@
 import{Router} from "express"
-import {getQuotes,UserPosts,postQuote,deleteQuotes} from "../controllers/Post.controller.js"
+import {getQuotes,UserPosts,postQuote,deletePost} from "../controllers/Post.controller.js"
 import {getCouplets, postCouplet,deleteCouplet} from "../controllers/Couplet.controller.js"
 import {getPoem, postPoem,deletePoem} from "../controllers/poem.controller.js";
 import {getStories, postStory,deleteStories} from "../controllers/Story.controller.js"
@@ -35,8 +35,5 @@ router.route("/story").post(verifyJWT, upload.fields([
                 name: "bgImg",
                 maxCount: 1,
             }]),postStory);
-router.route("/couplet/:coupletId").delete(verifyJWT, deleteCouplet);
-router.route("/poem/:poemId").delete(verifyJWT, deletePoem);
-router.route("/story/:storyId").delete(verifyJWT, deleteStories);
-router.route("/quote/:quoteId").delete(verifyJWT, deleteQuotes);
+router.route("/delete/:Id").delete(verifyJWT,deletePost);
 export default router

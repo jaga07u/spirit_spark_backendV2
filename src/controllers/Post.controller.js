@@ -448,39 +448,42 @@ const UserPosts = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const deleteQuotes = async (req, res, next) => {
+const deletePost = async (req, res, next) => { 
   try {
-    const { quoteId } = req.params;
+    const { Id } = req.params;
     
-    if (!quoteId) {
-      throw new ApiError(400, "Poem ID is required");
+    if (!Id) {
+      throw new ApiError(400, "Post ID is required");
     }
 
-    const quote = await Quote.findById(quoteId);
-    const story = await Story.findById(quoteId);
-    const poem = await Poem.findById(quoteId);
-    const couplet = await Couplet.findById(quoteId);
-    const data=quote || story || poem || couplet;
-   if(!data){
-      throw new Error("something went wrong");
-   }
-    const imageUrl = data.BgImageUrl;
-    const imageUrlParts = imageUrl ? imageUrl.split('/') : [];
-    const imagePublicId = imageUrlParts.length > 0 ? imageUrlParts[imageUrlParts.length - 1].split('.')[0] : null;
-    // Delete the poem document
-    await Couplet.findByIdAndDelete(quoteId);
-    await Quote.findByIdAndDelete(quoteId);
-    await Story.findByIdAndDelete(quoteId);
-    await Poem.findByIdAndDelete(quoteId);
-    // Delete the associated image in Cloudinary
-    if (imagePublicId) {
-      await Cloudnary.api.delete_resources(imagePublicId, { type: 'upload', resource_type: "image" });
+    // Fetch the document from the first matching collection
+    let data = await Quote.findById(Id) ||
+               await Story.findById(Id) ||
+               await Poem.findById(Id) ||
+               await Couplet.findById(Id);
+
+    if (!data) {
+      throw new ApiError(404, "Post not found");
     }
 
-    res.status(200).json(new ApiResponse(200, {}, "quote deleted successfully"));
+    // Extract and delete Cloudinary image
+    if (data.BgImageUrl) {
+      const imageUrlParts = data.BgImageUrl.split('/');
+      const imagePublicId = imageUrlParts[imageUrlParts.length - 1].split('.')[0];
+      
+      await cloudinary.uploader.destroy(imagePublicId); // Corrected Cloudinary deletion
+    }
+  console.log(data);
+    // Delete the found document from the correct collection
+    await data.deleteOne();
+ 
+    res.status(200).json(new ApiResponse(200, {}, "Post deleted successfully"));
   } catch (error) {
+    console.log(error);
+    
     next(error); // Pass the error to the global error handler
   }
 };
 
-export {postQuote,getQuotes,UserPosts,deleteQuotes}
+
+export {postQuote,getQuotes,UserPosts,deletePost}
