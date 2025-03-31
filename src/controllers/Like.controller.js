@@ -3,7 +3,6 @@ import {ApiResponse} from '../utils/ApiResponse.js'
 import {LikeQ,LikeS,LikeC,LikeP} from "../models/Like.model.js"
 import "dotenv/config"
 
-
 const ToggleQuoteLike=async(req,res)=>{
     const {quoteId}=req.body;
     const CurrentUserId=req.user._id;
