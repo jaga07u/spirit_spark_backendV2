@@ -18,7 +18,7 @@ import fs from "fs/promises"
 const postQuote=async(req,res)=>{
      const {quote,TextColor,image,url}=req.body;
    //  console.log(req.body);
-   const QuoteImage="";
+   let QuoteImage="";
     if(req.files?.bgImg?.length>0){
      const QuoteImg=req.files?.bgImg[0];
      const QuoteImagePath= req.files?.bgImg[0]?.path;
