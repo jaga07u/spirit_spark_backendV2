@@ -6,22 +6,40 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" }); // Up
 
 const prompt = "Does the image depict romance, sexuality, affection, or love or kissing scene? Respond only with 'yes' or 'no' without any punctuation.";
 
-const img_detect = async (image) => {
-  if (!image) {
+const img_detect = async (imageBase64) => {
+  if (!imageBase64) {
     console.error("Please upload an image!");
     throw new Error("Please upload an image!");
   }
 
+  const prompt = "Does the image depict romance, sexuality, affection, or love or kissing scenes? Respond only with 'yes' or 'no' without any punctuation.";
+
   try {
-    const result = await model.generateContent({ contents: [{ role: "user", parts: [prompt, { inline_data: { mime_type: "image/jpeg", data: image } }] }] });
-    const responseText = result.response.text().trim();
-    console.log("Image Detected:", responseText);
-    return responseText;
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: prompt },
+            {
+              inline_data: {
+                mime_type: "image/jpeg", // Change this if your image is in PNG format
+                data: imageBase64, // Pass the base64 image data directly
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    console.log("Image_Detected", result);
+    return result.response.text().trim();
   } catch (error) {
     console.error("Error generating content:", error);
     return "Error";
   }
 };
+
 
 const Text_detection = async (text) => {
   const prompt = "Is there any abuse, adult content, or extreme negativity in the given text? If yes, respond only 'yes', otherwise respond 'no'. Don't include any punctuation.";
