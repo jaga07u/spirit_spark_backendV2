@@ -24,17 +24,29 @@ const img_detect = async (image) => {
 };
 
 const Text_detection = async (text) => {
-  const textPrompt = "Is there any abuse, adult content, or extreme negativity in the above text? If yes, respond only 'yes', otherwise respond 'no'. Don't include any punctuation.";
+  const prompt = "Is there any abuse, adult content, or extreme negativity in the given text? If yes, respond only 'yes', otherwise respond 'no'. Don't include any punctuation.";
 
   try {
-    const result = await model.generateContent({ contents: [{ role: "user", parts: [`${text}\n\n${textPrompt}`] }] });
-    const responseText = result.response.text().trim();
-    console.log("Text Detected:", responseText);
-    return responseText;
+    // Structure the API request properly
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: text }, // Pass the input text separately
+            { text: prompt }, // Pass the prompt separately
+          ],
+        },
+      ],
+    });
+
+    console.log("Text_Detected", result);
+    return result.response.text().trim();
   } catch (error) {
-    console.error("Error generating content:", error);
+    console.error("Error detecting text content:", error);
     return "Error";
   }
 };
+
 
 export { img_detect, Text_detection };
