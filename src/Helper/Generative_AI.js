@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import "dotenv/config"
 const genAI = new GoogleGenerativeAI(`${process.env.GEMINIAPI_KEY}`); // Replace with your actual key
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" }); // Double-check model compatibility
-const prompt = "Does the image depict romance, sexuality,affection, or love? Respond only with 'yes' or 'no' without any punctuation.";
+const prompt = "Does the image depict romance, sexuality,affection, or love or kissing scence? Respond only with 'yes' or 'no' without any punctuation.";
 const img_detect = async (image) => {
   if (!image) {
       console.error("Please upload an image!");
