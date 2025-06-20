@@ -88,12 +88,6 @@ const generateAccessAndRefresToken=async(userId)=>{
         console.log("User Register Error");
     }
  }
-
-import { User } from "../models/User.js";
-import bcrypt from "bcryptjs";
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { generateAccessAndRefresToken } from "../utils/generateToken.js";
-
 export const LoginUser = async (req, res) => {
   const { email, password, googleId, username, fullname, avatar } = req.body;
 
