@@ -439,6 +439,7 @@ const UserPosts = async (req, res) => {
         {
           UserDetails: userInfo[0],
           posts: allPosts,
+          success:true
         },
         "User Profile Get Successfully"
       )
