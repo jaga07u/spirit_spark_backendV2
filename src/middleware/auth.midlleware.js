@@ -12,7 +12,7 @@ export const verifyJWT = async(req, res, next) => {
     
         if (!user) {
             
-         return res.status(401).json({
+         return res.status(201).json({
             success: false,
             message: error?.message || "Invalid access token"
         })
