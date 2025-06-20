@@ -89,31 +89,75 @@ const generateAccessAndRefresToken=async(userId)=>{
     }
  }
 
- const LoginUser=async (req,res)=>{
-   console.log(req.body);
-    const {email,password}=req.body;
-    const user=await User.findOne({email:email});
-    //console.log(user);
-    if(!user){
-        return res.status(400)
-        .json(new ApiResponse(400,{},"Email does not exists")); 
+import { User } from "../models/User.js";
+import bcrypt from "bcryptjs";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { generateAccessAndRefresToken } from "../utils/generateToken.js";
+
+export const LoginUser = async (req, res) => {
+  const { email, password, googleId, username, fullname, avatar } = req.body;
+
+  // 1. Google OAuth login
+  if (googleId) {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // create new user without password
+      user = await User.create({
+        email,
+        googleId,
+        username: username || email.split("@")[0],
+        fullname: fullname || "Google User",
+        avatarImg: avatar
+      });
     }
-    const IspasswordCorrect=await bcrypt.compare(password,user.password);
-    console.log(IspasswordCorrect);
-    if(!IspasswordCorrect){
-       throw new Error("Invalid password")
-    }
-    const {Token}=await generateAccessAndRefresToken(user._id);
-    user.Token=Token;
-   await  user.save({validateBeforeSave:false})
-   const options={
-    httpOnly:true,
-    secure:true,
- }
-   return res.status(200)
-   .cookie("accessToken",Token,options)
-   .json(new ApiResponse(200,{data:user,accessToken:Token},"user loggin  successfully")); 
- }
+
+    const { Token } = await generateAccessAndRefresToken(user._id);
+    user.Token = Token;
+    await user.save({ validateBeforeSave: false });
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", Token, options)
+      .json(new ApiResponse(200, { data: user, accessToken: Token }, "Google login successful"));
+  }
+
+  // 2. Traditional Email/Password login
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, {}, "Email does not exist"));
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) {
+    return res
+      .status(401)
+      .json(new ApiResponse(401, {}, "Invalid password"));
+  }
+
+  const { Token } = await generateAccessAndRefresToken(user._id);
+  user.Token = Token;
+  await user.save({ validateBeforeSave: false });
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", Token, options)
+    .json(new ApiResponse(200, { data: user, accessToken: Token }, "User logged in successfully"));
+};
+
 
  const LoginUserQuote=async(req,res)=>{
    const UserId=req.user._id;
