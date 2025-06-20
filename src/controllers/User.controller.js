@@ -88,7 +88,7 @@ const generateAccessAndRefresToken=async(userId)=>{
         console.log("User Register Error");
     }
  }
-export const LoginUser = async (req, res) => {
+ const LoginUser = async (req, res) => {
   const { email, password, googleId, username, fullname, avatar } = req.body;
 
   // 1. Google OAuth login
