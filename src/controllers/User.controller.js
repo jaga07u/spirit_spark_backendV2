@@ -270,10 +270,7 @@ const options = {
     httpOnly: true,
     secure: true
 }
- res
-.status(200)
-.clearCookie("accessToken", options)
-.clearCookie("refreshToken", options)
+
 return res
 .status(200)
 .clearCookie("accessToken", options)
@@ -361,8 +358,5 @@ try {
 } catch (error) {
   return res.status(500).json(new ApiResponse(500, {}, "Internal server error"));
 }
-
 }
-
-
 export {registerUser,LoginUser,LoginUserQuote,LogoutUser,UpdateUserProfile,ForgotPassword}
