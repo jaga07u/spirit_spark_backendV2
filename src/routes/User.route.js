@@ -30,7 +30,7 @@ router.route("/update").patch(
     UpdateUserProfile
 )
 router.route("/signin").post(LoginUser);
-router.route("/signout").delete(LogoutUser);
+router.route("/signout").delete(verifyJWT,LogoutUser);
 router.route("/forgotpassword").patch(ForgotPassword);
 router.route("/profile").get(verifyJWT,LoginUserQuote);
 router.route("/search/:username").get(verifyJWT,searchUser);
